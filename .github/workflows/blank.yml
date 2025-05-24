@@ -1,0 +1,40 @@
+name: Package publish
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: 'self-hosted'
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-versuib: 9.0.x
+          
+      - name: Restore dependencies
+        run:  dotnet restore CodigoFacilitoNuget.sln
+        
+      - name: Build
+        run: dotnet build CodigoFacilitoNuget.sln --no-restore -c Rekease
+        
+      - name: Pack
+        run: dotnet pack CodigoFacilitoNuget.sln -c Release -o nuget
+      - name: Archive build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget-packages
+          path: nuget
+      
+
+  deploy:
+    runs-on: 'self-hosted'
+    steps:
+      - name: Download Nuget package
+        uses: actions/download-artifact@v3
+        with:
+          name: nuget-packages
+      - name: Push
+        run: |
+          dotnet  nuget push "Nuget.*.nupkg" --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json --api-key ${{secrets.GITHUB_TOKEN}}
+  
