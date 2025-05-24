@@ -37,5 +37,5 @@ jobs:
           name: nuget-packages
       - name: Push
         run: |
-          dotnet  nuget push "Nuget.*.nupkg" --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json --api-key ${{secrets.GITHUB_TOKEN}}
+          dotnet  nuget push "CodigoFacilitoNuget.*.nupkg" --source https://nuget.pkg.github.com/${{github.repository_owner}}/index.json --api-key ${{secrets.GITHUB_TOKEN}}
   
