@@ -16,7 +16,7 @@ jobs:
         run:  dotnet restore CodigoFacilitoNuget.sln
         
       - name: Build
-        run: dotnet build CodigoFacilitoNuget.sln --no-restore -c Rekease
+        run: dotnet build CodigoFacilitoNuget.sln --no-restore -c Release
         
       - name: Pack
         run: dotnet pack CodigoFacilitoNuget.sln -c Release -o nuget
